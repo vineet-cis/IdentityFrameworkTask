@@ -1,0 +1,59 @@
+﻿@model IdentityFrameworkTask.DataModels.EventParticipant
+@using IdentityFrameworkTask.ViewModels
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 class="text-primary text-center">Student Details</h1>
+
+
+<htlm>
+    <head>
+        <style>
+            .bold-label {
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="row">
+            <div class="col-md-4">
+                @using (Html.BeginForm("Details", "Participant", FormMethod.Get))
+                {
+                    <table>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.CreateDate, new { @class = "bold-label" }): &nbsp;</td>
+                            <td>  </td>
+                            <td></td>
+                            <td>@Html.DisplayFor(model => model.CreateDate, new { htmlAttributes = new { @class = "form-control" } })</td>
+                        </tr>
+                        <tr></tr>
+                        <tr></tr>
+
+                        <tr>
+                            <td>@Html.LabelFor(model => model.EventID, new { @class = "bold-label" }): &nbsp;</td>
+                            <td>  </td>
+                            <td></td>
+                            <td>@Html.DisplayFor(model => model.EventID, new { htmlAttributes = new { @class = "form-control" } })</td>
+                        </tr>
+                        <tr></tr>
+                        <tr></tr>
+
+                        <tr>
+                            <td>@Html.LabelFor(model => model.StudentID, new { @class = "bold-label" }): &nbsp;</td>
+                            <td>  </td>
+                            <td></td>
+                            <td>@Html.DisplayFor(model => model.StudentID, new { htmlAttributes = new { @class = "form-control" } })</td>
+                        </tr>
+
+                    </table>
+                }
+            </div>
+            </div>
+    </body>
+</htlm>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

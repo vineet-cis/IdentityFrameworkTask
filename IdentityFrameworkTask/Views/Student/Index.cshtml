@@ -1,0 +1,87 @@
+﻿@model IEnumerable<IdentityFrameworkTask.DataModels.Student>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_Layout";
+}
+<style>
+    button {
+        display: inline-block;
+        background-color: red;
+        padding: 8px;
+        width: 110px;
+        color: #ffffff;
+        text-align: center;
+        border: 4px double #cccccc;
+        border-radius: 10px;
+        font-size: 18px;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+    }
+</style>
+
+<h1 class="text-center text-primary">Student Records</h1>
+<p>
+    <button id="myButton">Create</button>
+</p>
+<script>
+    document.getElementById("myButton").addEventListener("click", function () {
+        window.location.href = '@Url.Action("Create", "Student")';
+    });
+</script>
+
+<style type="text/css">
+    td {
+        padding: 0px 2px;
+    }
+</style>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Age)
+            </th>
+            <th colspan="3">***Options***</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Age)
+                </td>
+                <td> @Html.ActionLink("Edit", "Edit", new { id = item.Id }) </td>
+                <td> @Html.ActionLink("Details", "Details", new { id = item.Id }) </td>
+                <td> @Html.ActionLink("Delete", "Delete", new { id = item.Id })</td>
+            </tr>
+        }
+    </tbody>
+</table>

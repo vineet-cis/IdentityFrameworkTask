@@ -1,0 +1,60 @@
+﻿@model IdentityFrameworkTask.DataModels.EventParticipant
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="txt text-primary text-center">Edit Student Details</h1>
+<html>
+<head>
+    <style>
+        .bold-label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            @using (Html.BeginForm("Edit", "Participant", FormMethod.Post))
+            {
+                <table>
+
+                    @Html.HiddenFor(model => model.Id)
+
+                    <tr>
+                        <td>@Html.LabelFor(model => model.CreateDate, new { @class = "bold-label" })</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>@Html.EditorFor(model => model.CreateDate, new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EventID, new { @class = "bold-label" })</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>@Html.EditorFor(model => model.EventID, new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.StudentID, new { @class = "bold-label" })</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>@Html.EditorFor(model => model.StudentID, new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+                    <tr>
+                    </tr>
+                </table>
+                <br />
+                <br />
+                <button type="submit" class="btn btn-success">Update</button>   @Html.ActionLink("Back to List", "Index")
+            }
+        </div>
+    </div>
+</body>
+</html>
+
+

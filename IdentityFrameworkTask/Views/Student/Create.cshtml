@@ -1,0 +1,84 @@
+﻿@using IdentityFrameworkTask.Helpers
+@model IdentityFrameworkTask.ViewModels.StudentVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_Layout";
+}
+
+<style>
+    .bold-label {
+        font-weight: bold;
+    }
+</style>
+
+<h1 class="text-primary text-center">Create Student</h1>
+<br /> <br />
+    <div class="row">
+        <div class="col-6 offset-3">
+            <form id="myCreate" method="post" action="@Url.Action("Create", "Student")">
+
+                 <table>
+                    <tr>
+                    <td>@Html.LabelFor(m => m.StuData.FirstName, "First Name : ", new { @class = "bold-label" })</td>
+                            <td></td>
+                        <td></td>
+                            <td>@Html.EditorFor(m => m.StuData.FirstName)</td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                        <tr>
+                    <td>@Html.LabelFor(m => m.StuData.LastName, "Last Name : ", new { @class = "bold-label" })</td>
+                        <td></td>
+                        <td></td>
+                            <td>@Html.EditorFor(m => m.StuData.LastName)</td>
+                        </tr>
+                <tr></tr>
+                <tr></tr>
+                        <tr>
+                    <td>@Html.LabelFor(m => m.StuData.Address, "Address : ", new { @class = "bold-label" })</td>
+                        <td></td>
+                        <td></td>
+                            <td>@Html.EditorFor(m => m.StuData.Address)</td>
+                        </tr>
+                <tr></tr>
+                <tr></tr>
+                        <tr>
+                    <td>@Html.LabelFor(m => m.StuData.Phone, "Phone : ", new { @class = "bold-label" })</td>
+                            <td></td>
+                        <td></td>
+                            <td>@Html.EditorFor(m => m.StuData.Phone, new {htmlAttributes = new { onkeyup = "Validate(this)"}})</td>
+                        </tr>
+                <tr></tr>
+                <tr></tr>
+                        <tr>
+                    <td>@Html.LabelFor(m => m.StuData.Age, "Age : ", new { @class = "bold-label" })</td>
+                            <td></td>
+                        <td></td>
+                            <td>@Html.EditorFor(m => m.StuData.Age)</td>
+                        </tr>
+                <tr></tr>
+                <tr></tr>
+
+                  </table>
+                  <br />
+                <button type="submit" class="btn btn-success" id="myButton">Submit</button> &nbsp; | &nbsp; <span>@Html.ActionLink("Back to List", "Index")</span>
+            </form>
+       </div>
+   </div>
+
+
+
+<script>
+    debugger;
+    function Validate(input) 
+    {
+        debugger;
+        var phoneNumber = input.value.replace(/\D/g, '');
+        input.value = phoneNumber;
+        input.value = input.value.slice(0, 3) + "-" + input.value.slice(3, 6) + "-" + input.value.slice(6, 10);
+
+    }
+
+</script>

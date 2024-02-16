@@ -1,0 +1,251 @@
+﻿@model IdentityFrameworkTask.DataModels.Event
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="text-center text-primary">Edit Event</h1>
+<html>
+<head>
+    <style>
+        .bold-label {
+            font-weight: bold;
+        }
+
+        #lblmsg {
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
+
+    <script>
+        function checkValidstion() {
+            debugger;
+            var isvalid = true;
+
+            if (document.getElementById('Name').value == "") {
+                isvalid = false;
+                document.getElementById('Name_invalid').style.display = 'inline';
+            }
+            else {
+                document.getElementById('Name_invalid').style.display = 'none';
+            }
+            if (document.getElementById('Type').value == 0) {
+                isvalid = false;
+                document.getElementById('Type_invalid').style.display = 'inline';
+            }
+            else {
+                document.getElementById('Type_invalid').style.display = 'none';
+            }
+            if (document.getElementById('Start').value == "") {
+                isvalid = false;
+                document.getElementById('Start_invalid').style.display = 'inline';
+
+            }
+            else {
+                document.getElementById('Start_invalid').style.display = 'none';
+            }
+            if (document.getElementById('End').value == "") {
+                isvalid = false;
+                document.getElementById('End_invalid').style.display = 'inline';
+
+            }
+            else {
+                document.getElementById('End_invalid').style.display = 'none';
+            }
+            if (document.getElementById('Open').value == "") {
+                isvalid = false;
+                document.getElementById('Open_invalid').style.display = 'inline';
+
+            }
+            else {
+                document.getElementById('Open_invalid').style.display = 'none';
+            }
+            if (document.getElementById('Close').value == "") {
+                isvalid = false;
+                document.getElementById('Close_invalid').style.display = 'inline';
+
+            }
+            else {
+                document.getElementById('Close_invalid').style.display = 'none';
+            }
+            if (document.getElementById('Price').value == "" || document.getElementById('Price').value <= 0) {
+
+                isvalid = false;
+                document.getElementById('Price_invalid').style.display = 'inline';
+            }
+            else {
+                document.getElementById('Price_invalid').style.display = 'none';
+            }
+            if (document.getElementById('Limit').value == "" || document.getElementById('Limit').value <= 0) {
+
+                isvalid = false;
+                document.getElementById('Limit_invalid').style.display = 'inline';
+            }
+            else {
+                document.getElementById('Limit_invalid').style.display = 'none';
+            }
+
+            if (isvalid) {
+                document.getElementById('myEdit').style.display = 'inline';
+
+            }
+            else {
+                document.getElementById('myEdit').style.display = 'none';
+            }
+
+        } document.addEventListener("DOMContentLoaded", function () {
+            checkValidstion();
+        });
+    </script>
+
+    <script>
+        function getDays()
+        {
+            debugger;
+            var selected = $('#Frequency').val();
+            var startDate = $('#Start').val();
+
+            if (selected == '1') {
+                var endDate = new Date(startDate);
+                endDate.setDate(endDate.getDate() + 1);
+                $('#End').val(endDate.toISOString().slice(0, 16));
+                $('#End').prop('readonly', true)
+            }
+
+            if (selected == '2') {
+                var endDate = new Date(startDate);
+                endDate.setDate(endDate.getDate() + 7);
+                $('#End').val(endDate.toISOString().slice(0, 16));
+                $('#End').prop('readonly', true)
+
+            }
+        }
+          
+    </script>
+
+    <script>
+        function getFrequency() {
+            debugger;
+            document.getElementById('lblmsg').innerHTML =
+                ("This is a <b style='color:red;'>" + myEventEdit.Frequency[myEventEdit.Frequency.selectedIndex].text + " Event now." + '</b>')
+
+            getDays();
+        }
+    </script>
+
+</head>
+<body>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form id="myEventEdit" method="post" action="@Url.Action("Edit")">
+                <table>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    @Html.HiddenFor(model => model.Id)
+
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EventName, new { @class = "bold-label" })</td>
+                        <td>  </td>
+                        <td></td>
+                       <td>@Html.EditorFor(model => model.EventName, new { htmlAttributes = new { @class = "form-control", id = "Name", onkeyup = "checkValidstion();" } })
+                            <span id="Name_invalid" style="color:red; display:none;">**</span>
+                            <td><label id="lblmsg"></label>
+                       </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EventType, new { @class = "bold-label" })</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>@Html.DropDownListFor(model => model.EventType, IdentityFrameworkTask.Helpers.TypeEnum.PriorityStatusDDL(), new { id = "Type", onchange = "checkValidstion();" })
+                            <span id="Type_invalid" style="color:red; display:none;">**</span>
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EventFrequency, new { @class = "bold-label" }): &nbsp;</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>
+                            @Html.DropDownListFor(m => m.EventFrequency, IdentityFrameworkTask.Helpers.FrequencyEnum.FrequencyDDL(), new { id = "Frequency", onchange  = "checkValidstion(); getFrequency();" })
+                            <span id="Frequency_invalid" style="color:red; display:none;">**</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EventStartDate, new { @class = "bold-label" })</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>
+                            @Html.EditorFor(model => model.EventStartDate, new { htmlAttributes = new { @class = "form-control", id = "Start",  onchange = "checkValidstion(); getDays();" } })
+                            <span id="Start_invalid" style="color:red; display:none;">**</span>
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EventEndDate, new { @class = "bold-label" })</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>@Html.EditorFor(model => model.EventEndDate, new { htmlAttributes = new { @class = "form-control", id = "End",  onchange = "checkValidstion();" } })
+                            <span id="End_invalid" style="color:red; display:none;">**</span>
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.RegistrationOpenDate, new { @class = "bold-label" })</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>@Html.EditorFor(model => model.RegistrationOpenDate, new { htmlAttributes = new { @class = "form-control", id = "Open",  onchange = "checkValidstion();" } })
+                            <span id="Open_invalid" style="color:red; display:none;">**</span>
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.RegistrationCloseDate, new { @class = "bold-label" })</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>
+                            @Html.EditorFor(model => model.RegistrationCloseDate, new { htmlAttributes = new { @class = "form-control", id = "Close",  onchange = "checkValidstion();" } })
+                            <span id="Close_invalid" style="color:red; display:none;">**</span>
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.Price, new { @class = "bold-label" })</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>@Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", id = "Price", onkeyup = "checkValidstion();" } })
+                            <span id="Price_invalid" style="color:red; display:none;">**</span>
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.Limit, new { @class = "bold-label" })</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>@Html.EditorFor(model => model.Limit, new { htmlAttributes = new { @class = "form-control", id = "Limit", onkeyup = "checkValidstion();" } })
+                            <span id="Limit_invalid" style="color:red; display:none;">**</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                    </tr>
+                </table>
+                <br />
+                <button type="submit" class="btn btn-success" id="myEdit">Update</button> &nbsp; | &nbsp;
+                <span>@Html.ActionLink("Back to List", "Index")</span>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+
+

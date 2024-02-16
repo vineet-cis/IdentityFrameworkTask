@@ -1,0 +1,354 @@
+﻿@using IdentityFrameworkTask.Helpers
+@using System.Security.Policy;
+@model IdentityFrameworkTask.ViewModels.EventVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_Layout";
+}
+<script>
+    function checkValidstion() {
+        debugger;
+        var isvalid = true;
+
+        if (document.getElementById('Name').value == "") {
+            isvalid = false;
+            document.getElementById('Name_invalid').style.display = 'inline';
+        }
+        else {
+            document.getElementById('Name_invalid').style.display = 'none';
+        }
+        if (document.getElementById('Type').value == 0) {
+            isvalid = false;
+            document.getElementById('Type_invalid').style.display = 'inline';
+        }
+        else {
+            document.getElementById('Type_invalid').style.display = 'none';
+        }
+        if (document.getElementById('Frequency').value == 0) {
+            isvalid = false;
+            document.getElementById('Frequency_invalid').style.display = 'inline';
+        }
+        else {
+            document.getElementById('Frequency_invalid').style.display = 'none';
+        }
+        if (document.getElementById('Start').value == "") {
+            isvalid = false;
+            document.getElementById('Start_invalid').style.display = 'inline';
+
+        }
+        else {
+            document.getElementById('Start_invalid').style.display = 'none';
+        }
+        if (document.getElementById('End').value == "") {
+            isvalid = false;
+            document.getElementById('End_invalid').style.display = 'inline';
+
+        }
+        else {
+            document.getElementById('End_invalid').style.display = 'none';
+        }
+        if (document.getElementById('Open').value == "") {
+            isvalid = false;
+            document.getElementById('Open_invalid').style.display = 'inline';
+
+        }
+        else {
+            document.getElementById('Open_invalid').style.display = 'none';
+        }
+        if (document.getElementById('Close').value == "") {
+            isvalid = false;
+            document.getElementById('Close_invalid').style.display = 'inline';
+
+        }
+        else {
+            document.getElementById('Close_invalid').style.display = 'none';
+        }
+        if (document.getElementById('Price').value == "" || document.getElementById('Price').value <= 0) {
+
+            isvalid = false;
+            document.getElementById('Price_invalid').style.display = 'inline';
+        }
+        else {
+            document.getElementById('Price_invalid').style.display = 'none';
+        }
+        if (document.getElementById('Limit').value == "" || document.getElementById('Limit').value <= 0) {
+
+            isvalid = false;
+            document.getElementById('Limit_invalid').style.display = 'inline';
+        }
+        else {
+            document.getElementById('Limit_invalid').style.display = 'none';
+        }
+        
+        if (isvalid) {
+            document.getElementById('myButton').style.display = 'inline';
+
+        }
+        else {
+            document.getElementById('myButton').style.display = 'none';
+        }
+
+    } document.addEventListener("DOMContentLoaded", function () {
+        checkValidstion();
+    });
+</script>
+
+<h1 class="text-center text-primary">Create Event</h1>
+<br />
+
+<html>
+<head>
+    <style>
+        .bold-label {
+            font-weight: bold;                                                                          
+        }
+
+        #msg {
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .left-align {
+            margin: 0;
+        }
+
+    </style>
+
+    <script>
+        function getFrequency()
+        {
+            debugger;
+            var message = "This is a ";
+            var freqText = myEvent.Frequency[myEvent.Frequency.selectedIndex].text;
+
+            if (myEvent.Frequency.selectedIndex != 0)
+            {
+                document.getElementById('lblmsg').style.display = 'block';
+                message += "<b style='color:red;'>" + freqText + " Event.</b>";
+                document.getElementById('lblmsg').innerHTML = message
+            }
+            else
+            {
+                document.getElementById('lblmsg').style.display = 'none';
+            }
+                //("This is a <b style='color:red;'>" + myEvent.Frequency[myEvent.Frequency.selectedIndex].text + " Event."+'</b>')
+
+             getDays();
+        }
+    </script>
+
+    <script>
+
+
+        function getDays()
+        {
+            debugger;
+            var selected = $('#Frequency').val();
+            var startDate = $('#Start').val();
+
+            if (selected == '1') {
+                var endDate = new Date(startDate);
+                endDate.setDate(endDate.getDate() + 1);
+                $('#End').val(endDate.toISOString().slice(0, 16));
+                //$('#End').prop('disabled', 'disabled');
+                $('#End').prop('readonly', true)
+            }
+
+            if (selected == '2') {
+                var endDate = new Date(startDate);
+                endDate.setDate(endDate.getDate() + 7);
+                $('#End').val(endDate.toISOString().slice(0, 16));
+                $('#End').prop('readonly', true)
+                
+            }
+
+            if (selected == '3') {
+                var endDate = new Date(startDate);
+                endDate.setDate(endDate.getDate());
+                $('#End').val(endDate.toISOString().slice(0, 16));
+                $('#End').prop('readonly', false)
+            }
+        }
+
+        function getDiscount()
+        {
+            var price = $('#Price').val();
+            var discount = $('#discount').val();
+            var net = price * (discount / 100);
+            var discounted = price - net;
+            discounted = discounted.toFixed(2);
+            $('#net').val(discounted);
+            $('#net').prop('readonly', true);
+        }
+
+        function Validate(input)
+        {
+            var price = input.value.replace(/\D/g, '');
+            input.value = price;
+        }
+    </script>
+
+</head>
+<body>
+    <div class="row">
+        <div>
+            <form id="myEvent" method="post" action="@Url.Action("Create")">
+                <table class="left-align">
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EventData.EventName, new { @class = "bold-label" }): &nbsp;</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>
+                            @Html.EditorFor(model => model.EventData.EventName, new { htmlAttributes = new { @class = "form-control", id = "Name", onkeyup = "checkValidstion();" } })
+                            <span id="Name_invalid" style="color:red; display:none;">**</span>
+                            <td><label id="lblmsg"></label>
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EventData.EventType, new { @class = "bold-label" }): &nbsp;</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>
+                            @Html.DropDownListFor(m => m.EventData.EventType, IdentityFrameworkTask.Helpers.TypeEnum.PriorityStatusDDL(), new { id = "Type", onchange  = "checkValidstion();" })
+                            <span id="Type_invalid" style="color:red; display:none;">**</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EventData.EventFrequency, new { @class = "bold-label" }): &nbsp;</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>
+                            @Html.DropDownListFor(m => m.EventData.EventFrequency, IdentityFrameworkTask.Helpers.FrequencyEnum.FrequencyDDL(), new { id = "Frequency", onchange  = "checkValidstion(); getFrequency();" })
+                            <span id="Frequency_invalid" style="color:red; display:none;">**</span>
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EventData.EventStartDate, new { @class = "bold-label" }): &nbsp;</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>
+                            @Html.EditorFor(model => model.EventData.EventStartDate, new { htmlAttributes = new { @class = "form-control", id = "Start",  onchange = "checkValidstion(); getDays();" } })
+                            <span id="Start_invalid" style="color:red; display:none;">**</span>
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EventData.EventEndDate, new { @class = "bold-label" }): &nbsp;</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>
+                            @Html.EditorFor(model => model.EventData.EventEndDate, new { htmlAttributes = new { @class = "form-control", id = "End", onchange = "checkValidstion();" } })
+                            <span id="End_invalid" style="color:red; display:none;">**</span>
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EventData.RegistrationOpenDate, new { @class = "bold-label" }): &nbsp;</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>
+                            @Html.EditorFor(model => model.EventData.RegistrationOpenDate, new { htmlAttributes = new { @class = "form-control", id = "Open", onchange = "checkValidstion(); disableDate();" } })
+                            <span id="Open_invalid" style="color:red; display:none;">**</span>
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EventData.RegistrationCloseDate, new { @class = "bold-label" }): &nbsp;</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>
+                            @Html.EditorFor(model => model.EventData.RegistrationCloseDate, new { htmlAttributes = new { @class = "form-control", id = "Close", onchange = "checkValidstion();" } })
+                            <span id="Close_invalid" style="color:red; display:none;">**</span>
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EventData.Price, new { @class = "bold-label" }): &nbsp;</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>
+                            @Html.EditorFor(model => model.EventData.Price, new { htmlAttributes = new { @class = "form-control", id = "Price", onkeyup = "checkValidstion(); getDiscount();", oninput = "Validate(this);" } })
+                            <span id="Price_invalid" style="color:red; display:none;">**</span>
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EventData.Discount, new { @class = "bold-label" }): &nbsp;</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>
+                            @Html.EditorFor(model => model.EventData.Discount, new { htmlAttributes = new { @class = "form-control", id = "discount", onkeyup = "getDiscount();" } })
+                            <td> <b>%</b> 
+                            </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.NetPrice, new { @class = "bold-label" }): &nbsp;</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>
+                            @Html.EditorFor(model => model.NetPrice, new { htmlAttributes = new { @class = "form-control", id = "net" } })
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EventData.Limit, new { @class = "bold-label" }): &nbsp;</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>@Html.EditorFor(model => model.EventData.Limit, new { htmlAttributes = new { @class = "form-control", id = "Limit", onkeyup = "checkValidstion();", onchange = "checkValidation();" } })</td>
+                           <td> <span id="Limit_invalid" style="color:red; display:none;">**</span>
+                        </td>
+                    </tr>
+                </table>
+                <br /><br />
+
+                <button type="submit" class="btn btn-success" id="myButton">Submit</button> &nbsp; | &nbsp;
+                <span>@Html.ActionLink("Back to List", "Index")</span>
+
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+
+    function disableDate() 
+    {
+        debugger;
+        var selectedDate = new Date($('#Open').val());
+        var end = new Date($('#Close').val());
+        
+        if(selectedDate > end)
+        {
+            end.setDate(selectedDate.getDate() + 1);
+            $('#Close').val(selectedDate.toISOString().slice(0, 16));
+        }
+
+        selectedDate.setDate(selectedDate.getDate() + 1);
+        var minDate = selectedDate.toISOString().slice(0, 16);
+        $('#Close').attr('min', minDate);
+
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        disableDate();
+    });
+
+</script>
+
+
+

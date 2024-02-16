@@ -1,0 +1,242 @@
+﻿@model IEnumerable<IdentityFrameworkTask.ViewModels.EventVM>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_Layout";
+}
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+<style>
+    button {
+        display: inline-block;
+        background-color: red;
+        padding: 8px;
+        width: 108px;
+        color: #ffffff;
+        text-align: center;
+        border: 4px double #cccccc;
+        border-radius: 10px; 
+        font-size: 14px;
+    }
+</style>
+
+<h1 class="text-center text-primary">Event Data</h1>
+<br />
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <button id="myButton">Create Event</button>
+    </p>
+}
+else
+{
+    <script>
+       document.getElementById('myButton').style.display = 'none';
+    </script>
+}
+<script>
+    document.getElementById("myButton").addEventListener("click", function () {
+        window.location.href = '@Url.Action("Create", "Event")';
+    });
+</script>
+
+<style>
+    table, th, td {
+        border: 2px solid #96D4D4;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: center;
+    }
+
+
+</style>
+<div class="row">
+    <div class="col-md-4">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.EventData.EventName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EventData.EventType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EventData.EventFrequency)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EventData.EventStartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EventData.EventEndDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EventData.RegistrationOpenDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EventData.RegistrationCloseDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EventData.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EventData.Discount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NetPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EventData.Limit)
+                </th>
+                <th colspan="3">***Options***</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                var price = item.Price;
+                var discount = item.Discount;
+                var discounted = price * (discount / 100);
+                var net = price - discounted;
+
+                var rowId = "event-" + item.Id;
+                var editbtnId = "Edit" + item.Id;
+                var savebtnId = "Save" + item.Id;
+            <tr id="@rowId">
+                <td>
+                        @Html.DisplayFor(modelItem => item.EventName)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.EventType)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.EventFrequency)
+                </td>
+                <td >
+                        <div>
+                            <span class="date-display" id="date-display-@rowId">@item.EventStartDate.ToString("dd/MM/yyyy")</span>
+                        </div>
+
+                        <div id="@savebtnId" style="display:none" class="save-div">
+                            @Html.EditorFor(modelItem => item.EventStartDate, new { htmlAttributes = new { @class = "new-date", id = "newDate-@rowId" } })
+                            <br> <br>
+                            <button class="btn btn-success save-button" id="save-button-@rowId" , onclick="saveData(@item.Id, '@rowId', '@editbtnId', '@savebtnId')">Save</button>
+
+                        </div>
+
+                        <div id="@editbtnId" class="edit-div">
+                            <button class="btn btn-info edit-button" id="edit-@rowId" , onclick="editDate('@rowId', '@editbtnId', '@savebtnId')">Edit</button>
+
+                        </div>
+          
+                </td>
+                <td>
+                        @item.EventEndDate.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                        @item.RegistrationOpenDate.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                        @item.RegistrationCloseDate.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Discount)%
+                    </td>
+                    <td>
+                       @net.ToString("N2")
+                    </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Limit)
+                </td>
+                @if(User.IsInRole("Admin"))
+                {
+                        <td> @Html.ActionLink("Edit", "Edit", new { id = item.Id })  </td>
+                }
+                        <td> @Html.ActionLink("Details", "Details", new { id = item.Id }) </td>
+
+                @if (User.IsInRole("Admin"))
+                {
+                        <td> @Html.ActionLink("Delete", "Delete", new { id = item.Id })  </td>
+                }
+            </tr>
+          }
+        </tbody>
+    </table>
+
+</div>
+</div>
+<script>
+
+    function editDate(rowId, editDivId, saveDivId)
+    {
+        debugger;
+        $('.edit-div').not('#' + editDivId).each(function () {
+            var $currentDiv = $(this);
+            $currentDiv.find('.date-display').show();
+            $currentDiv.find('.save-button').hide();
+        });
+        var $row = $("#" + rowId);
+        var $dateDisplay = $row.find('.date-display');
+        var $editButton = $row.find('.edit-button');
+        var $saveButton = $row.find('.save-button');
+
+        document.getElementById(editDivId).style.display = 'none';
+        $dateDisplay.hide();
+        document.getElementById(saveDivId).style.display = 'block';
+        //$('.edit-div').not('#' + editDivId).load();
+    }
+
+    function saveData(Id, rowId, editDivId, saveDivId)
+    {
+
+        debugger;
+        var $row = $("#" + rowId);
+        var $dateDisplay = $row.find('.date-display');
+        var $newdate = $row.find('.new-date');
+        var itemId = Id
+        var newDate = $newdate.val();
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("updateDate", "Event")',
+            data:
+            {
+                Id : Id,
+                newDate : newDate
+            },
+            success: function (data) {
+                
+                debugger;
+                var updatedDate = new Date(data.eventStartDate);
+                let day = updatedDate.getDate();
+                let month = updatedDate.getMonth() + 1;
+                let year = updatedDate.getFullYear();
+
+                day = day < 10 ? "0" + day : day;
+                month = month < 10 ? "0" + month : month;
+
+                let formattedDate = `${day}-${month}-${year}`;
+
+                $dateDisplay.text(formattedDate);
+                $dateDisplay.show();
+            }
+        });
+
+        document.getElementById(saveDivId).style.display = 'none';
+        //$dateDisplay.show();
+        document.getElementById(editDivId).style.display = 'block';
+    }
+
+
+</script>

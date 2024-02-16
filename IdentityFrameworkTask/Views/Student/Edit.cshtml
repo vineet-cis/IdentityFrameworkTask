@@ -1,0 +1,71 @@
+﻿@model IdentityFrameworkTask.DataModels.Student
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_Layout";
+}
+
+<h1 class="txt text-primary text-center">Edit Student Details</h1>
+<html>
+<head>
+    <style>
+        .bold-label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            @using (Html.BeginForm("Edit", "Student", FormMethod.Post))
+            {
+                <table>
+
+                    @Html.HiddenFor(model => model.Id)
+
+                    <tr>
+                        <td>@Html.LabelFor(model => model.FirstName, new { @class = "bold-label" })</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>@Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+                    <tr></tr> <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.LastName, new { @class = "bold-label" })</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>@Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+                    <tr></tr> <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.Address, new { @class = "bold-label" })</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>@Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+                    <tr></tr> <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.Phone, new { @class = "bold-label" })</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>@Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+                    <tr></tr> <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.Age, new { @class = "bold-label" })</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>@Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+                    <tr>
+                    </tr>
+                </table>
+            <br />
+                     <button type="submit" class="btn btn-success">Update</button>   @Html.ActionLink("Back to List", "Index");
+            }
+        </div>
+    </div>
+</body>
+</html>
+

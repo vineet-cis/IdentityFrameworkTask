@@ -1,0 +1,122 @@
+﻿@using IdentityFrameworkTask.Helpers
+@model IdentityFrameworkTask.ViewModels.ParticipantVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_Layout";
+}
+
+<h1 class="text-center text-primary">New Registration</h1>
+<br />
+
+<html>
+<head>
+    <style>
+        .bold-label {
+            font-weight: bold;
+        }
+
+        .warn-msg {
+            color: red;
+        }
+        tr {
+            padding : 50px;
+        }
+
+    </style>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script>
+       
+    </script>
+</head>
+<body>
+    <div class="row">
+        <div>
+            <form id="myEvent" method="post" action="@Url.Action("Create")">
+                @*@Html.HiddenFor(m => m.IsChangeEventType)*@
+                <table>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.EventData.EventType, new { @class = "bold-label" }): &nbsp;</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>
+                            @Html.DropDownListFor(m => m.EventData.EventType, IdentityFrameworkTask.Helpers.TypeEnum.PriorityStatusDDL(),
+                            new  { @class ="" , id = "EventType"/*, onchange="check();"*/ })
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                      <tr>
+                        <td>@Html.LabelFor(model => model.Event, new { @class = "bold-label" }): &nbsp;</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>
+                            @Html.DropDownListFor(m => m.SelectedEventId, Model.EventDDL, "--select event--", new { @class = "form-control", id = "EventNameList" })
+
+                        </td>
+                      </tr>
+                    <td>  </td>
+                    <td></td>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.Name, "Student Name", new { @class = "bold-label" }): &nbsp;</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>
+                            @Html.DropDownListFor(m => m.SelectedStudentId, Model.StudentDDL, new { @class = "form-control" })
+
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td>@Html.LabelFor(model => model.PartData.CreateDate, "Registration Date", new { @class = "bold-label" }): &nbsp;</td>
+                        <td>  </td>
+                        <td></td>
+                        <td>@Html.EditorFor(model => model.PartData.CreateDate, new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+
+                </table>
+                <br />
+
+                <button type="submit" class="btn btn-success" id="myButton">Submit</button> &nbsp; | &nbsp;
+                <span>@Html.ActionLink("Back to List", "Index")</span>
+                <script>/*setvalue();*/</script>
+            </form>
+        </div>
+    </div>
+  </body>
+</html>
+
+<script >
+    $(function () {
+          $('#EventType').change(function () {
+              debugger;
+               var selectedEventType = $(this).val();
+                     if (selectedEventType != '') {
+                            $.ajax({
+                                type: 'GET',
+                                 url: '@Url.Action("GetEventNames", "Participant")',
+                                data: { selectedEventType: selectedEventType },
+                                success: function (eventNames) {
+                                    debugger;
+                                    var eventDropdown = $('#EventNameList');
+                                    eventDropdown.empty();
+                                    //eventDropdown.append('<option value="">Select Event Name</option>');
+                                    $.each(eventNames, function (i, event) {
+                                    eventDropdown.append($('<option></option>').val(event.value).text(event.text))
+                                    });
+                                
+                                }
+                    
+                            });
+                     }
+          });
+    });
+      
+</script>

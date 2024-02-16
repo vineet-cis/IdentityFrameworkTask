@@ -1,0 +1,112 @@
+﻿@model IdentityFrameworkTask.DataModels.Event
+@using IdentityFrameworkTask.DataModels
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 class="text-center text-primary">Event Details</h1>
+
+
+<html>
+  <head>
+        <style>
+            .bold-label {
+                font-weight: bold;
+            }
+        </style>
+
+    <script>
+        function getFrequency() {
+            debugger;
+            document.getElementById('lblmsg').innerHTML =
+                ("This is a <b style='color:red;'>" + myEvent.Frequency[myEvent.Frequency.selectedIndex].text + " Event now." + '</b>')
+
+            getDays();
+        }
+    </script>
+
+
+  </head>
+    <body>
+      <div class="row">
+        <div class="col-md-4">
+           <form id="myEventEdit" method="get">
+                <table>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.EventName, new { @class = "bold-label" }): &nbsp;</td>
+                            <td>  </td>
+                            <td></td>
+                            <td>@Html.DisplayFor(model => model.EventName, new { htmlAttributes = new { @class = "form-control" } })</td>
+                        </tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.EventType, new { @class = "bold-label" }): &nbsp;</td>
+                            <td>  </td>
+                            <td></td>
+                            <td>@Html.DisplayFor(model => model.EventType, new { htmlAttributes = new { @class = "form-control" } })</td>
+                        </tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.EventStartDate, new { @class = "bold-label" }): &nbsp;</td>
+                            <td>  </td>
+                            <td></td>
+                            <td>@Html.DisplayFor(model => model.EventStartDate, new { htmlAttributes = new { @class = "form-control" } })</td>
+                        </tr>
+                        <tr></tr>
+                        <tr></tr>
+
+                        <tr>
+                            <td>@Html.LabelFor(model => model.EventEndDate, new { @class = "bold-label" }): &nbsp;</td>
+                            <td>  </td>
+                            <td></td>
+                            <td>@Html.DisplayFor(model => model.EventEndDate, new { htmlAttributes = new { @class = "form-control" } })</td>
+                        </tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.RegistrationOpenDate, new { @class = "bold-label" }): &nbsp;</td>
+                            <td>  </td>
+                            <td></td>
+                            <td>@Html.DisplayFor(model => model.RegistrationOpenDate, new { htmlAttributes = new { @class = "form-control" } })</td>
+                        </tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.RegistrationCloseDate, new { @class = "bold-label" }): &nbsp;</td>
+                            <td>  </td>
+                            <td></td>
+                            <td>@Html.DisplayFor(model => model.RegistrationCloseDate, new { htmlAttributes = new { @class = "form-control" } })</td>
+                        </tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.Price, new { @class = "bold-label" }): &nbsp;</td>
+                            <td>  </td>
+                            <td></td>
+                            <td>@Html.DisplayFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })</td>
+                        </tr>
+                        <tr></tr>
+                        <tr></tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.Limit, new { @class = "bold-label" }): &nbsp;</td>
+                            <td>  </td>
+                            <td></td>
+                            <td>@Html.DisplayFor(model => model.Limit, new { htmlAttributes = new { @class = "form-control" } })</td>
+                        </tr>
+
+                </table>
+            </form>
+            <br />
+
+            <div>
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+
+        </div>
+      </div>
+    </body>
+</html>
+
