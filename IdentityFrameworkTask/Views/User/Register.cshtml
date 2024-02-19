@@ -109,7 +109,10 @@
                 <br /> <br />
                 <br />
                 <button type="submit" class="btn btn-primary" id="myButton">Submit</button> &nbsp; | &nbsp;
-                <span>@Html.ActionLink("Back to List", "Index")</span>
+                @if (User.IsInRole("Admin"))
+                {
+                    <span>@Html.ActionLink("Back to List", "Index")</span>
+                }
 
             </form>
         </div>
