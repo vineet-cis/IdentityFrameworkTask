@@ -38,6 +38,7 @@ namespace IdentityFrameworkTask.Views.Role
 
             }).ToList();
             return View(model);
+
         }
 
         [HttpGet]
